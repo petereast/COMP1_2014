@@ -34,15 +34,46 @@ When you complete a game you will be asked to add your score to the list of most
 ###Questions
 **Answer** the following questions:
 
-1. Which function is responsible for getting the name from the user?
-2. How will you ensure that the user is asked for the name repeatedly?
-3. What additional variable will you need and what will its datatype be?
+ - Which function is responsible for getting the name from the user?
+
+>`GetPlayerName`
+
+ - How will you ensure that the user is asked for the name repeatedly?
+
+>Using a rogue value loop
+
+ - What additional variable will you need and what will its datatype be?
+
+>I need an additional variable?
 
 ###Pseudo-code
 Write the function identified above in pseudo-code with the improvements necessary to prevent the user leaving their name blank.
 
+```
+PUT "Please enter your name:"
+GET PlayerName
+WHILE PlayerName = "" DO
+  PUT "Please enter your name: "
+  GET PlayerName
+ENDWHILE
+RETURN PlayerName
+
+```
+
 ###Program code
 Use the pseudo-code created above to help you improve the actual program code.
+
+```python
+def GetPlayerName():
+  print()
+  PlayerName = input('Please enter your name: ')
+  while PlayerName.strip() == "":
+    print("Please enter a value for your name!", sys.stderr)
+    PlayerName = input("Please enter your name: ")
+  print()
+  return PlayerName
+
+```
 
 ##Task 3(b) - Deciding whether you want to add your name to the recent score table
 Some users are not keen on adding their name to high score tables - they want to play the game but remain anonymous. Before being asked for their name they should be allowed to decide whether they want to add their name to the recent score table:
@@ -52,10 +83,36 @@ Some users are not keen on adding their name to high score tables - they want to
 ###Questions
 **Answer** the following questions:
 
-1. Which function is responsible for adding scores to the table?
+- Which function is responsible for adding scores to the table?
+
+> `UpdateRecentScores`
 
 ###Program code
 **Improve** the function identified above so that the user has the choice of whether to add their name to the high score table or not.
+
+```pyhton
+def UpdateRecentScores(RecentScores, Score):
+  choice = GetChoiceFromUser("Do you want to add a highscore? (enter either Y or N)")
+  if choice == "n":
+    print("Okay :(")
+    return 0
+  PlayerName = GetPlayerName()
+  FoundSpace = False
+  Count = 1
+  while (not FoundSpace) and (Count <= NO_OF_RECENT_SCORES):
+    if RecentScores[Count].Name == '':
+      FoundSpace = True
+    else:
+      Count = Count + 1
+  if not FoundSpace:
+    for Count in range(1, NO_OF_RECENT_SCORES):
+      RecentScores[Count].Name = RecentScores[Count + 1].Name
+      RecentScores[Count].Score = RecentScores[Count + 1].Score
+    Count = NO_OF_RECENT_SCORES
+  RecentScores[Count].Name = PlayerName
+  RecentScores[Count].Score = Score
+
+```
 
 ##Task 4 - Formatting the recent score table
 Currently the formatting of the recent score table is quite poor:
@@ -68,15 +125,51 @@ It would be better if it looked like this:
 
 **Find** the function responsible for generating the recent score table and **improve** it so that the scores are displayed in a clear tabular format.
 
+```python
+def DisplayRecentScores(RecentScores):
+  #generate tabular widths:
+  name_widths = []
+  for score in RecentScores:
+    try:
+      name_widths.append(len(score.Name))
+    except AttributeError:
+      pass
+  if max(name_widths) > 6:
+    width = max(name_widths)+3
+  else:
+    width = 9
+  print("{0:<{1}}{2}".format("Name", width, "Score"))
+  for score in RecentScores:
+    try:
+      print("{0:<{1}}{2:<5}".format(score.Name, width, score.Score))
+    except AttributeError:
+      pass
+  print()
+  
+
+```
+
 ##Task 5 - Adding a date to the recent scores
 One improvement that we can make is to record the date a high score was achieved. This will involve making changes in **four** functions of the program and **importing** an additional module.
 
 ###Questions
 **Answer** the following questions:
 
-1. What additional module will you need to import into the program?
-2. Identify the four functions that will require changes.
+- What additional module will you need to import into the program?
+
+>`datetime`
+
+- Identify the four functions that will require changes.
+
+> `UpdateRecentScores`
+> `DisplayRecentScores`
+> `TRecentScore.__init__`
+> `ResetRecentScores`
+
 3. How do you convert a string in the format DD/MM/YY (e.g. 14/08/93) to a **date** type in Python?
+
+>`date = datetime.strptime(strdate, "%d/%m/%y")`
+
 
 ###Program code
 **Make** the necessary changes to the program so that the date can be stored along with the rest of the of the recent score details. **Ensure** that when the score is displayed that it is in the **format DD/MM/YY**.
