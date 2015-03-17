@@ -5,6 +5,7 @@
 # version 2 edited 06/03/2014
 
 import random, sys
+from datetime import *
 
 NO_OF_RECENT_SCORES = 3
 
@@ -17,6 +18,7 @@ class TRecentScore():
   def __init__(self):
     self.Name = ''
     self.Score = 0
+    self.Date = None
 
 Deck = [None]
 RecentScores = [None]
@@ -181,19 +183,26 @@ def ResetRecentScores(RecentScores):
     RecentScores[Count].Score = 0
 
 def DisplayRecentScores(RecentScores):
-  print()
   #generate tabular widths:
-  namewidths = []
+  name_widths = []
   for score in RecentScores:
     try:
-      namewidths.append(len(score.Name))
+      name_widths.append(len(score.Name))
     except AttributeError:
-      print("There are no highscores to display!")
-      return 0
-  width = max(namewidths)
-  print("{0:<{1}}{2}".format("Name", width, "Score"))
+      pass
+  if max(name_widths) > 6:
+    width = max(name_widths)+3
+  else:
+    width = 9
+  print("{0:<{1}}{2:<7}{3}".format("Name", width, "Score", "Date"))
   for score in RecentScores:
-    print("{0:<{1}}{2:<5}".format(score.Name, width, score.Score))
+    try:
+      print("{0:<{1}}{2:<7}{3}".format(score.Name, width, score.Score, datetime.strftime(score.Date, "%d/%m/%y")))
+    except AttributeError:
+      pass
+    except TypeError:
+      print("End of list!")
+      break
   print()
   
 
@@ -217,6 +226,7 @@ def UpdateRecentScores(RecentScores, Score):
     Count = NO_OF_RECENT_SCORES
   RecentScores[Count].Name = PlayerName
   RecentScores[Count].Score = Score
+  RecentScores[Count].Date = datetime.now()
 
 def PlayGame(Deck, RecentScores):
   LastCard = TCard()
