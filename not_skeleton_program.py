@@ -26,10 +26,38 @@ class option():
     self.value = value
     self.opt_type = opt_type
 
-Options = [None]
+Options = []
 Deck = [None]
 RecentScores = [None]
 Choice = ''
+
+def setOption(option_id, option_val, option_type=bool):
+  global Options
+  Options.append(option(option_id, option_val, option_type))
+
+def getflag(option_id):
+  for opt in option:
+    if(opt.name == option_id):
+      return opt.value
+  return None
+
+
+
+getOption = getflag ## Function Assignment for shorthand and programming convention
+
+def LoadOptions(options):
+  try:
+    with open("options.dat") as options_bin:
+      options = pickle.load(options_bin)
+  except FileNotFoundError:
+    print("[  NB  ] Options file not found, loading defaults")
+    setOption("AcesHigh", False, bool)
+    setOption("Otherstuff", True, bool)
+
+def DisplayOptions(options):
+  print("{0:^15}  {1}".format("Option", "Value"))
+  for opt in options:
+    print("{0:<15} - {1}".format(opt.name, opt.value))
 
 def GetRank(RankNo):
   Rank = ''
@@ -81,6 +109,7 @@ def DisplayMenu():
   print('2. Play game (without shuffle)')
   print('3. Display recent scores')
   print('4. Reset recent scores')
+  print('5. Options')
   print()
   print('Select an option from the menu (or enter q to quit): ', end='')
 
@@ -140,6 +169,8 @@ def GetCard(ThisCard, Deck, NoOfCardsTurnedOver):
 def IsNextCardHigher(LastCard, NextCard):
   Higher = False
   if NextCard.Rank > LastCard.Rank:
+    Higher = True
+  elif getflag("AcesHigh") and NextCard.Rank == 1:
     Higher = True
   return Higher
 
@@ -263,15 +294,7 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
-def LoadOptions(options):
-  try:
-    with open("options.dat") as options_bin:
-      options = pickle.load(options_bin)
-  except FileNotFoundError:
-    print("[  NB  ] Options file not found, loading defaults")
-    options.append(option("AcesHigh", False, bool))
-    options.append(option("Otherstuff", True, bool))
-    
+   
 
 if __name__ == '__main__':
   LoadOptions(Options)
@@ -294,3 +317,5 @@ if __name__ == '__main__':
       DisplayRecentScores(RecentScores)
     elif Choice == '4':
       ResetRecentScores(RecentScores)
+    elif Choice == "5":
+      DisplayOptions(Options)
