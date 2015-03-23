@@ -206,6 +206,24 @@ The AS textbook has a good section on passing by value and passing by reference 
 
 - For each function in the program identify the mechanism using to pass each parameter. **Note**: this task will take a while but it will improve your understanding of the program and by useful for the exam.
 
+|Function ID|P1 Name|P1 Type|P2 Name|P2 Type|P3 Name|P3 Type|
+|:---------:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
+|GetRank|RankNo|Int (By Value)|||||
+|GetSuit|SuitNo|Int (By Value)|||||
+|LoadDeck|Deck|List (By Ref)|||||
+|ShuffleDeck|Deck|List (By Ref)|||||
+|DisplayCard|ThisCard|Record (By Ref)||||
+|GetCard|ThisCard|Record (By Ref)|Deck|List (By Ref)|NoOfCardsTurnedOver|Int (By Value)|
+|IsNextCardHigher|LastCard|Record (By Ref)|NextCard|Record (By Ref)|||
+|GetChoiceFromUser|Prompt|String (By Value)|||||
+|DisplayEndOfGameMessage|Score|Int (By Value)|||||
+|DislayCorrectGuessMessage|Score|Int (By Value)|||||
+|ResetRecentScores|RecentScores|List (By Reference)|||||
+|DisplayRecentScores|RecentScores|List (By Reference)|||||
+|UpdateRecentScores|RecentScores|List(By Reference)|Score|Int (By Value)|||
+|PlayGame|Deck|List (By Reference)|RecentScores|List (By Reference)|||
+
+
 ##Next
 This task sheet has focused on **validation**, the next set of tasks will involve making improvements to the actual game.
 
