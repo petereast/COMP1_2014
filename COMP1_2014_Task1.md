@@ -201,6 +201,7 @@ The AS textbook has a good section on passing by value and passing by reference 
 **Answer** the following questions:
 
 1. Describe the difference between passing by value and passing by reference in **your own words**.
+>Passing a value takes the exact value from the memory cell and places it in the memory location for it's destination wheras passing by reference passes 
 2. For each function in the program identify the mechanism using to pass each parameter. **Note**: this task will take a while but it will improve your understanding of the program and by useful for the exam.
 
 ##Next
