@@ -202,7 +202,7 @@ The AS textbook has a good section on passing by value and passing by reference 
 
 - Describe the difference between passing by value and passing by reference in **your own words**.
  
->Passing by value **copies** the original data into a new variable wheras passing by reference passes a pointer to the memory location so that the function can access the **original** variable.
+>Passing by value **copies** the original data into a new variable wheras passing by reference passes a pointer to the memory location so that the function accesses the **original** variable.
 
 - For each function in the program identify the mechanism using to pass each parameter. **Note**: this task will take a while but it will improve your understanding of the program and by useful for the exam.
 
