@@ -20,8 +20,18 @@ It should work as follows:
 **Answer** the following questions:
 
 1. Where would be a good place in the program to keep track of whether the ace is high or not? Remember that the aces' value will be set before a game is started and it will not change for the duration of the game.
+    
+    As part of a list of other options, each of which is a record which can be access by a function which returns the boolean     value for the switch, this can then be used in the if statement.
+
 2. Name the function that will need to be altered so that **`5. Options`** is part of the main menu.
+    
+    `DisplayMenu`
+
+    `GetMenuChoice`
+
 3. Name the function that will need to be modified so that card value comparisons will work correctly now that aces can be either high or low.
+
+    `IsNextCardHigher`
 
 ###Pseudo-code
 You will need four additional functions to make this improvement possible:
@@ -34,6 +44,41 @@ You will need four additional functions to make this improvement possible:
 **Remember** that **validation** should be included where necessary.
 
 1. Write pseudo-code for each of the four functions identified above.
+
+```pseudocode
+
+FUNCTION DisplayOptions()
+    OUTPUT "\n";
+    OUTPUT "Main Menu\n";
+    OUTPUT "\n"
+    OUTPUT "1. Play Game (With Shuffle)\n";
+    OUTPUT "2. Play Game (Without Shuffle)\n";
+    OUTPUT "3. Display Recent Scores\n";
+    OUTPUT "4. Reset Recent Scores\n";
+    OUTPUT "5. Options\n";
+END FUNCTION
+
+FUNCTION GetOptionChoice()
+    AcceptableChoices ← ["q","1","2","3","4","5"]
+    OUTPUT "Please enter an acceptable choice: "
+    choice ← tolowercase(INPUT[0]);
+    WHILE choice NOT IN AcceptableChoices DO
+        OUTPUT "Please enter an acceptable choice: "
+        choice ← tolowercase(INPUT[0]);
+    END WHILE
+    RETURN choice
+END FUNCTION
+
+FUNCTION setOption(options, flagname, value, type):
+    options.append(NEW option(flagname, value, type))
+END FUNCTION
+
+FUNCTION SetAcesHighOrLow(options)
+    
+END FUNCTION
+
+
+```
 
 ###Program code
 Make the following changes to the code in the program:

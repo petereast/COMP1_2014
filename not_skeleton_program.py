@@ -4,7 +4,7 @@
 # developed in the Python 3.2 programming environment
 # version 2 edited 06/03/2014
 
-import random, sys
+import random, sys, pickle
 from datetime import *
 
 NO_OF_RECENT_SCORES = 3
@@ -20,6 +20,13 @@ class TRecentScore():
     self.Score = 0
     self.Date = None
 
+class option():
+  def __init__(self, name='', value=False, opt_type=bool):
+    self.name = name
+    self.value = value
+    self.opt_type = opt_type
+
+Options = [None]
 Deck = [None]
 RecentScores = [None]
 Choice = ''
@@ -78,7 +85,7 @@ def DisplayMenu():
   print('Select an option from the menu (or enter q to quit): ', end='')
 
 def GetMenuChoice():
-  acceptable_input = ["q", "1", "2", "3", "4"]
+  acceptable_input = ["q", "1", "2", "3", "4", "5"]
   try:
     choice = input("Enter yout choice:\n>>>")[0].lower()
   except IndexError:
@@ -256,7 +263,18 @@ def PlayGame(Deck, RecentScores):
     DisplayEndOfGameMessage(51)
     UpdateRecentScores(RecentScores, 51)
 
+def LoadOptions(options):
+  try:
+    with open("options.dat") as options_bin:
+      options = pickle.load(options_bin)
+  except FileNotFoundError:
+    print("[  NB  ] Options file not found, loading defaults")
+    options.append(option("AcesHigh", False, bool))
+    options.append(option("Otherstuff", True, bool))
+    
+
 if __name__ == '__main__':
+  LoadOptions(Options)
   for Count in range(1, 53):
     Deck.append(TCard())
   for Count in range(1, NO_OF_RECENT_SCORES + 1):
