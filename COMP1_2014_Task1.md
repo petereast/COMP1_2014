@@ -200,9 +200,11 @@ The AS textbook has a good section on passing by value and passing by reference 
 ##Questions
 **Answer** the following questions:
 
-1. Describe the difference between passing by value and passing by reference in **your own words**.
->Passing a value takes the exact value from the memory cell and places it in the memory location for it's destination wheras passing by reference passes 
-2. For each function in the program identify the mechanism using to pass each parameter. **Note**: this task will take a while but it will improve your understanding of the program and by useful for the exam.
+- Describe the difference between passing by value and passing by reference in **your own words**.
+ 
+>Passing by value **copies** the original data into a new variable wheras passing by reference passes a pointer to the memory location so that the function can access the **original** variable.
+
+- For each function in the program identify the mechanism using to pass each parameter. **Note**: this task will take a while but it will improve your understanding of the program and by useful for the exam.
 
 ##Next
 This task sheet has focused on **validation**, the next set of tasks will involve making improvements to the actual game.
