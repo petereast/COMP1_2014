@@ -31,12 +31,69 @@ Deck = [None]
 RecentScores = [None]
 Choice = ''
 
+def GetChoiceFromUser(prompt):
+  accept = False
+  acceptable_confirm_input = ["Y", "Yes", "yes", "y"]
+  acceptable_deny_input = ["N", "No", "no", "n"]
+  choice = ''
+  while choice not in acceptable_confirm_input+acceptable_deny_input:
+    choice = input(prompt)
+    if choice in acceptable_confirm_input:
+      Choice = "y"
+      break
+    elif choice in acceptable_deny_input:
+      Choice = "n"
+      break
+    else:
+      print("Invalid Input :(", file=sys.stderr)
+      continue
+  return Choice
+
 def setOption(option_id, option_val, option_type=bool):
   global Options
   Options.append(option(option_id, option_val, option_type))
 
+def flipOption(option_id):
+  global Options
+
+  #check if the option exists:
+  try:
+    tmp = Options[option_id]
+    del tmp
+    exists = True
+  except IndexError:
+    exists = False
+  #if the option is a bool, and it exists, swap the value of the option
+  if exists and Options[option_id].opt_type == bool:
+    #the option is a bool
+    Options[option_id].value = not Options[option_id].value
+    print("The new value of {0} is {1}".format(Options[option_id].name, Options[option_id].value))
+  #if the option isn't a bool, and it exists, offer other options
+  elif exists and not Options[option_id].opt_type == bool:
+    print("This option isn't a switch, it's current value is {0}, enter nothing to leave as-is, enter a value to change".format(Options[option_id].value))
+    new_value = input(">>>")
+    if (new_value.strip() != ""):
+      Options[option_id].value = new_value
+  #if the option doesn't exist, create it and give the user an option
+  if not exists:
+    choice = GetChoiceFromUser("This option doesn't exist, do you want to create it?")
+    if choice == "y":
+      new_option_name = input("Input the option's name:\n>>>")
+      new_option_value = GetChoiceFromUser("Enter the options value (yes or no)")
+      if new_option_value == "y":
+        new_option_value = True
+      elif new_option_value == "n":
+        new_option_value = False
+      setOption(new_option_name, new_option_value)
+    else:
+      print("Okay, cancelling...")
+  
+    
+  #to set it.
+
 def getflag(option_id):
-  for opt in option:
+  global Options
+  for opt in Options:
     if(opt.name == option_id):
       return opt.value
   return None
@@ -54,10 +111,27 @@ def LoadOptions(options):
     setOption("AcesHigh", False, bool)
     setOption("Otherstuff", True, bool)
 
+def ChangeOptionsMenu(options):
+  print("Enter the ID of the option you want to change:")
+  acceptable = False
+  while not acceptable:
+    try:
+      choice = int(input(">>>"))
+      if choice in list(range(len(options))):
+        acceptable = True
+      else:
+        raise ValueError("oops!")
+    except ValueError:
+      print("Enter something valid!!!", file=sys.stderr)
+  change_choice = GetChoiceFromUser("Do you want to change this value?")
+  if change_choice == "y":
+    flipOption(choice-1)
+
 def DisplayOptions(options):
   print("{0:^15}  {1}".format("Option", "Value"))
-  for opt in options:
-    print("{0:<15} - {1}".format(opt.name, opt.value))
+  for index, opt in enumerate(options):
+    print("{2} {0:<15} - {1}".format(opt.name, opt.value, index+1))
+  ChangeOptionsMenu(options)    
 
 def GetRank(RankNo):
   Rank = ''
@@ -171,7 +245,7 @@ def IsNextCardHigher(LastCard, NextCard):
   if NextCard.Rank > LastCard.Rank:
     Higher = True
   elif getflag("AcesHigh") and NextCard.Rank == 1:
-    Higher = True
+    Higher = False
   return Higher
 
 def GetPlayerName():
@@ -182,24 +256,6 @@ def GetPlayerName():
     PlayerName = input("Please enter your name: ")
   print()
   return PlayerName
-
-def GetChoiceFromUser(prompt):
-  accept = False
-  acceptable_confirm_input = ["Y", "Yes", "yes", "y"]
-  acceptable_deny_input = ["N", "No", "no", "n"]
-  choice = ''
-  while choice not in acceptable_confirm_input+acceptable_deny_input:
-    choice = input(prompt)
-    if choice in acceptable_confirm_input:
-      Choice = "y"
-      break
-    elif choice in acceptable_deny_input:
-      Choice = "n"
-      break
-    else:
-      print("Invalid Input :(", file=sys.stderr)
-      continue
-  return Choice
 
 def DisplayEndOfGameMessage(Score):
   print()
